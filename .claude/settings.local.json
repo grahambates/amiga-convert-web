@@ -6,7 +6,10 @@
       "Bash(/Users/BatesGW1/projects/amiga-convert-web/app.js)",
       "Bash(rsvg-convert:*)",
       "Bash(ls:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(node --check:*)"
     ],
     "deny": [],
     "ask": []

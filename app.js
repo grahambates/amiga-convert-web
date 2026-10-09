@@ -17,6 +17,7 @@ import {
   parseMatteColor,
   updateDitherControlVisibility,
 } from './src/settingsManager.js';
+import { resampleImage } from './src/resample.js';
 
 // Helper functions to reduce duplication
 
@@ -198,16 +199,16 @@ async function convertImage() {
       slidePreviewCanvas.height = height;
     }
 
-    // Draw original to main canvas (resized if enabled)
-    ctx.drawImage(window.sourceImage, 0, 0, width, height);
+    // Resample source image to target dimensions using selected method
+    const resampleMethod = document.getElementById("resampleMethod").value;
+    let imageData = resampleImage(window.sourceImage, width, height, resampleMethod);
 
-    // Get image data and calculate histogram
-    let imageData = ctx.getImageData(0, 0, width, height);
+    // Draw resampled data to canvases
+    ctx.putImageData(imageData, 0, 0);
     curvesEditor.calculateHistogram(imageData);
 
-    // Draw original to slide canvas
     const slideOriginalCtx = slideOriginalCanvas.getContext("2d");
-    slideOriginalCtx.drawImage(window.sourceImage, 0, 0, width, height);
+    slideOriginalCtx.putImageData(imageData, 0, 0);
 
     // Increment conversion ID to track this conversion
     currentConversionId++;
@@ -1241,6 +1242,12 @@ document.getElementById("resizeHeight").addEventListener("input", (e) => {
 
 // Trigger conversion when dimension values change (on blur or enter)
 document.getElementById("resizeWidth").addEventListener("change", () => {
+  if (window.sourceImage) {
+    convertImage();
+  }
+});
+
+document.getElementById("resampleMethod").addEventListener("change", () => {
   if (window.sourceImage) {
     convertImage();
   }

@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS = {
     ditherAmount: 0.5,
     errorDampeningEnabled: false,
     errorDampeningThreshold: 48,
+    resampleMethod: 'bilinear',
   },
   curves: {
     rgb: [[0, 0], [255, 255]],
@@ -94,6 +95,7 @@ export function getConversionValues() {
     bayerSize: parseInt(document.getElementById("bayerSize").value),
     errorDampeningEnabled: document.getElementById("errorDampeningEnabled").checked,
     errorDampeningThreshold: parseInt(document.getElementById("errorDampeningThreshold").value),
+    resampleMethod: document.getElementById("resampleMethod").value,
   };
 }
 
@@ -181,6 +183,7 @@ export function gatherSettings(curvesEditor) {
       ditherAmount: conv.ditherAmount,
       errorDampeningEnabled: conv.errorDampeningEnabled,
       errorDampeningThreshold: conv.errorDampeningThreshold,
+      resampleMethod: conv.resampleMethod,
     },
     curves: {
       rgb: curvesEditor.curves.rgb.map(p => [...p]),
@@ -242,6 +245,9 @@ export function applySettings(settings, curvesEditor) {
     if (c.errorDampeningThreshold !== undefined) {
       document.getElementById("errorDampeningThreshold").value = c.errorDampeningThreshold;
       document.getElementById("errorDampeningThresholdNumber").value = c.errorDampeningThreshold;
+    }
+    if (c.resampleMethod !== undefined) {
+      document.getElementById("resampleMethod").value = c.resampleMethod;
     }
   }
 
